@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PengaduanController;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return redirect()->route('login');
+}); 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -31,7 +31,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
     Route::resource('pengaduan', PengaduanController::class);
+
+    Route::post(
+        '/pengaduan/{pengaduan}/balas',
+        [PengaduanController::class, 'balas']
+    )->name('pengaduan.balas');
+
 });
 
 require __DIR__.'/auth.php';
